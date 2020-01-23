@@ -2,19 +2,19 @@ import React from 'react';
 import { createSwitchNavigator,createAppContainer} from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-
+import {setNavigator} from './src/navigationRef';
 import SigninScreen from './src/screens/SigninScreen';
-import SingupScreen from './src/screens/SingupScreen';
+import SignupScreen from './src/screens/SignupScreen';
 import AccountScreen from './src/screens/AccountScreen';
 import TrackCreateScreen from './src/screens/TrackCreateScreen';
 import TrackDetailScreen from './src/screens/TrackDetailScreen';
 import TrackListScreen from './src/screens/TrackListScreen';
-
+import {Provider as AuthProvider} from './src/context/AuthContext';
 
 
 const switchNavigator = createSwitchNavigator({
   loginFlow: createStackNavigator({
-    Singup:SingupScreen,
+    Signup:SignupScreen,
     Signin:SigninScreen
   }),
   mainFlow:createBottomTabNavigator({
@@ -27,4 +27,12 @@ const switchNavigator = createSwitchNavigator({
   })
 }); 
 
-export default createAppContainer(switchNavigator);
+const App= createAppContainer(switchNavigator);
+
+export default () =>{
+  return(
+    <AuthProvider>
+      <App ref={(navigator) => { setNavigator(navigator) }}/>
+    </AuthProvider>
+  )
+}
